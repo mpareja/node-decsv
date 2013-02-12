@@ -35,6 +35,7 @@
   "files": [
     "index.js",
     "parser.js",
+    "README.md",
     "scanner.js",
     "test.js"
   ]
