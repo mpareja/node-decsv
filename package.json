@@ -31,5 +31,11 @@
     "grunt": "~0.3.17",
     "grunt-jslint": "~0.2.5",
     "jslint": "~0.1.9"
-  }
+  },
+  "files": [
+    "index.js",
+    "parser.js",
+    "scanner.js",
+    "test.js"
+  ]
 }
