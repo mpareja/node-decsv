@@ -1,0 +1,35 @@
+{
+  "name": "decsv",
+  "version": "0.0.0",
+  "description": "Streaming CSV scanner and parser",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mpareja/node-decsv"
+  },
+  "keywords": [
+    "csv",
+    "parser",
+    "scanner",
+    "stream"
+  ],
+  "author": {
+    "name": "Mario Pareja",
+    "email": "pareja.mario@gmail.com",
+    "url": "http://www.mariopareja.com/blog"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "stream-combiner": "0.0.1",
+    "through": "~2.1.0"
+  },
+  "devDependencies": {
+    "chai": "~1.5.0",
+    "grunt": "~0.3.17",
+    "grunt-jslint": "~0.2.5",
+    "jslint": "~0.1.9"
+  }
+}
