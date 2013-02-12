@@ -1,6 +1,6 @@
 {
   "name": "decsv",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Streaming CSV scanner and parser",
   "main": "index.js",
   "scripts": {
