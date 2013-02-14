@@ -15,17 +15,42 @@ test('"first","second",third', [['first', 'second', 'third']]);
 test('first,"seco\nnd",third', [['first', 'seco\nnd', 'third']]);
 test('first,"seco,nd",third', [['first', 'seco,nd', 'third']]);
 
-run();
+var tests = generateTests().concat(testErrors);
+async.series(tests, function (err) {
+  if (err) {
+    console.log('FAIL!');
+    console.log(err.message);
+    process.exit(1);
+  } else {
+    console.log('Pass.');
+    process.exit(0);
+  }
+});
 
 function test(input, expected) {
   queue.push({input: input, expected: expected});
 }
 
-function run() {
-  var fns = queue.map(function (test) {
+function testErrors(cb) {
+  var s = decsv();
+  s.on('data', function () {
+    cb(new Error('Should not have received incomplete data'));
+  });
+  s.on('error', function (e) {
+    cb(null);
+  });
+  s.on('end', function () {
+    cb(new Error('End called before error.'));
+  });
+  s.write('"first');
+  s.end();
+}
+
+function generateTests() {
+  return queue.map(function (test) {
     return function (cb) {
       var d = decsv();
-      var found = [], errors = [], scanned = [], parsed = [];
+      var found = [], scanned = [], parsed = [];
       d.on('data', function (values) {
         found.push(values);
       });
@@ -36,27 +61,23 @@ function run() {
         } catch (e) {
           console.log('scanned:'); console.log(scanned);
           console.log('parsed:'); console.log(parsed);
+          console.log('input:' + test.input);
+          console.log('expected:' + test.expected);
           cb(e);
         }
       });
       d.on('error', function (err) {
-        errors.push(err);
+        console.log('scanned:'); console.log(scanned);
+        console.log('parsed:'); console.log(parsed);
+        console.log('input:' + test.input);
+        console.log('expected:' + test.expected);
+        cb(err);
       });
       d._scanner.on('data', function (data) { scanned.push(data); });
       d._parser.on('data', function (data) { parsed.push(data); });
       d.write(test.input);
       d.end();
     };
-  });
-  async.series(fns, function (err) {
-    if (err) {
-      console.log('FAIL!');
-      console.log(err.message);
-      process.exit(1);
-    } else {
-      console.log('Pass.');
-      process.exit(0);
-    }
   });
 }
 

@@ -3,7 +3,7 @@ module.exports = function () {
   var buffer = '';
   var position = 0;
 
-  return through(ondata/*, onend */);
+  return through(ondata, onend);
 
   function ondata(data) {
     data = buffer + data;
@@ -68,6 +68,7 @@ module.exports = function () {
     function eol(optionalChar) {
       consume(); // \r or \n
       if (c === null) {
+        // wait for more input before deciding if this is the whole line-feed
         return null;
       }
       if (c === optionalChar) {
@@ -95,16 +96,24 @@ module.exports = function () {
       return c !== null;
     }
 
-    function tokenize(type, value) {
-      var token = { type: type };
-      if (value !== undefined) {
-        token.value = value;
-      }
-      return token;
-    }
   }
 
   function onend() {
-    // TODO: just raise unexpected EOF if buffer remains
+    if (!buffer) {
+      this.queue(null); // end
+    } else if (buffer === '\r' || buffer === '\n') {
+      this.queue(tokenize('eol'));
+      this.queue(null); // end
+    } else {
+      this.emit('error', new Error('Unexpected end of stream: "' + buffer + '"'));
+    }
   }
 };
+
+function tokenize(type, value) {
+  var token = { type: type };
+  if (value !== undefined) {
+    token.value = value;
+  }
+  return token;
+}
