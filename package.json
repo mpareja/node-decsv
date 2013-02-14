@@ -29,6 +29,7 @@
   "devDependencies": {
     "chai": "~1.5.0",
     "grunt": "~0.3.17",
+    "grunt-bump": "0.0.1",
     "grunt-jslint": "~0.2.5",
     "jslint": "~0.1.9"
   },

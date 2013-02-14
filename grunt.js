@@ -1,5 +1,6 @@
 module.exports = function (grunt) {
-  grunt.loadNpmTasks('grunt-jslint'); // load the task
+  grunt.loadNpmTasks('grunt-jslint');
+  grunt.loadNpmTasks('grunt-bump');
 
   grunt.initConfig({
     watch: {
@@ -25,6 +26,6 @@ module.exports = function (grunt) {
     }
   });
 
-  grunt.registerTask('default', 'watch');
+  grunt.registerTask('default', 'jslint');
 };
 
