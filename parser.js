@@ -88,7 +88,7 @@ module.exports = function () {
     if (values.length) {
       this.queue(values);
     }
-    this.emit('end');
+    this.queue(null); // end
   }
 
   return main();
