@@ -1,4 +1,4 @@
-# decsv - steaming CSV scanner and parser
+# decsv - streaming CSV scanner and parser
 
 Give `decsv` a stream of CSV formatted string data and it will emit a stream of records containing the separate values. `decsv` will emit an array of values for each record in the CSV that it encounters.
 
