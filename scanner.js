@@ -1,5 +1,5 @@
 var through = require('through');
-module.exports = function () {
+module.exports = function (delimiter) {
   var buffer = '';
   var position = 0;
 
@@ -29,9 +29,9 @@ module.exports = function () {
 
     function scan() {
       if (c === null) { return null; }
+      if (c === delimiter) { return separator(); }
       switch (c) {
       case '"': return quote();
-      case ',': return separator();
       case '\n': return eol('\r');
       case '\r': return eol('\n');
       default: return unquoted();
@@ -79,7 +79,7 @@ module.exports = function () {
 
     function unquoted() {
       var literal = c;
-      while (consume() && c !== ',' && c !== '\n' && c !== '\r') {
+      while (consume() && c !== delimiter && c !== '\n' && c !== '\r') {
         literal += c;
       }
       return tokenize('literal', literal);

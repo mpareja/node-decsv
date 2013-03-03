@@ -2,8 +2,8 @@ var scanner = require('./scanner');
 var parser = require('./parser');
 var combiner = require('stream-combiner');
 
-module.exports = function () {
-  var s = scanner(),
+module.exports = function (delimiter) {
+  var s = scanner(delimiter || ','),
     p = parser(),
     c = combiner(s, p);
 
